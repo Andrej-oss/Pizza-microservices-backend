@@ -26,10 +26,10 @@ public class PizzaController {
     public String addPizza(@RequestBody PizzaRestModel pizzaModel) {
 
         CreatePizzaCommand pizzaCommand = CreatePizzaCommand.builder()
-                .pizzaId(UUID.randomUUID().toString())
+                .id(UUID.randomUUID().toString())
                 .name(pizzaModel.getName())
                 .price(pizzaModel.getPrice())
                 .build();
-        return "Pizza added";
+        return commandGateway.sendAndWait(pizzaCommand);
     }
 }
