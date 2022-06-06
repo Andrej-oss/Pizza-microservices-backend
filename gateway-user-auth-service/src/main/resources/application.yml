@@ -1,41 +1,28 @@
 server:
-  port: 9090
-  servlet:
-    context-path: /user
+  port: 8090
+
+management:
+  endpoint.gateway.enabled: true
+  endpoints.web.exposure.include: gateway
+
 spring:
-  application:
-    name: gateway-service
-  jackson:
-    serialization:
-      INDENT_OUTPUT: false
-      WRITE_DATE_AS_TIMESTAMPS: false
-    deserialization:
-      FAIL_ON_IGNORED_PROPERTIES: false
+  application.name: gateway-user-auth-service
   cloud:
     gateway:
-      discovery:
-        locator:
-          enabled: true
+      discovery.locator.enabled: true
       routes:
         - id: user-service
           uri: lb://user-service
           predicates:
-            - Path=/users/**
+            - Path=/users/signIn,/users/signUp
+        - id: user-service
+          uri: lb://user-service
+          predicates:
+            Path=/users/**
+          filters:
+            - AuthFilter
 
 eureka:
   client:
-    register-with-eureka: true
-    fetch-registry: true
-    service-url:
-      defaultZone: http://localhost:8761/eureka/
-  instance:
-    hostname: localhost
-
-management:
-  endpoint:
-    gateway:
-      enabled: true
-  endpoints:
-    web:
-      exposure:
-        include: gateway
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
