@@ -1,0 +1,32 @@
+package com.example.userservice.config;
+
+
+import java.time.Duration;
+
+import org.springframework.cloud.circuitbreaker.resilience4j.ReactiveResilience4JCircuitBreakerFactory;
+import org.springframework.cloud.circuitbreaker.resilience4j.Resilience4JConfigBuilder;
+import org.springframework.cloud.client.circuitbreaker.Customizer;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import io.github.resilience4j.circuitbreaker.CircuitBreakerConfig;
+import io.github.resilience4j.timelimiter.TimeLimiterConfig;
+
+@Configuration
+public class Resilience4JConfig {
+
+    @Bean
+    public Customizer<ReactiveResilience4JCircuitBreakerFactory> defaultCustomizer() {
+        return factory -> factory.configureDefault(id -> new Resilience4JConfigBuilder(id)
+                .circuitBreakerConfig(CircuitBreakerConfig.custom()
+                        .slidingWindowSize(10)
+                        .slidingWindowType(CircuitBreakerConfig.SlidingWindowType.TIME_BASED)
+                        .minimumNumberOfCalls(5)
+                        .failureRateThreshold(50)
+                        .maxWaitDurationInHalfOpenState(Duration.ofSeconds(5))
+                        .waitDurationInOpenState(Duration.ofSeconds(5))
+                        .permittedNumberOfCallsInHalfOpenState(3)
+                        .build())
+                .timeLimiterConfig(TimeLimiterConfig.custom().timeoutDuration(Duration.ofSeconds(10)).build()).build());
+    }
+}

@@ -1,16 +1,16 @@
-package com.pizzashop.orderservice;
+package com.pizzashop.configservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.config.server.EnableConfigServer;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
-import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
 
 @SpringBootApplication
 @EnableEurekaClient
-@EnableRedisRepositories
-public class OrderServiceApplication {
+@EnableConfigServer
+public class ConfigServiceApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(OrderServiceApplication.class, args);
+        SpringApplication.run(ConfigServiceApplication.class, args);
     }
 }

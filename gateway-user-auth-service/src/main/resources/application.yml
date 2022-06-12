@@ -1,24 +1,8 @@
 server:
   port: 8090
-
 management:
   endpoint.gateway.enabled: true
-  endpoints:
-    web:
-      base-path: /actuator
-      cors:
-        allowed-origins: true
-      exposure:
-        include: "*"
-    jmx:
-      exposure:
-        include: "*"
-  endpoint:
-    health:
-      show-details: always
-      enabled: true
 spring:
-  application.name: gateway-user-auth-service
   cloud:
     gateway:
       discovery.locator.enabled: true
@@ -50,20 +34,19 @@ spring:
       hystrix:
         enabled: true
 
-
   main:
     allow-circular-references: true
     web-application-type: reactive
     allow-bean-definition-overriding: true
 
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: http://localhost:8761/eureka
-    register-with-eureka: true
-    fetch-registry: true
-  instance:
-    hostname: localhost
 hystrix:
   dashboard:
     proxy-stream-allow-list: "*"
+resilience4j:
+  circuitbreaker:
+    metrics:
+      legacy:
+        enabled: true
+  bulkhead:
+    metrics:
+      enabled: true

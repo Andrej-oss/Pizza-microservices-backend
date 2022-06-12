@@ -1,0 +1,17 @@
+server:
+  port: 8095
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+  instance:
+    hostname: localhost
+spring:
+  application:
+    name: config-service
+  cloud:
+    config:
+      server:
+        git:
+          clone-on-start: true
+          uri: https://github.com/Andrej-oss/config-server
